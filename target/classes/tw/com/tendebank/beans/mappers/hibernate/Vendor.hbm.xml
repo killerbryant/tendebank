@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015/8/17 ?U?? 09:22:30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.com.tendebank.beans.Vendor" table="VENDOR">
+        <id name="vendorNo" type="java.lang.String">
+            <column name="VENDOR_NO" />
+            <generator class="assigned" />
+        </id>
+        <property name="companyName" type="java.lang.String">
+            <column name="COMPANY_NAME" />
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS" />
+        </property>
+        <property name="zipCode" type="java.lang.String">
+            <column name="ZIPCODE" />
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="TELEPHONE" />
+        </property>
+        <property name="mobile" type="java.lang.String">
+            <column name="MOBILE" />
+        </property>
+        <property name="vendorPerson" type="java.lang.String">
+            <column name="VENDOR_PERSON" />
+        </property>
+    </class>
+</hibernate-mapping>

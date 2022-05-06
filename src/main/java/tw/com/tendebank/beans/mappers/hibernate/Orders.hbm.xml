@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 27, 2016 2:57:36 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.com.tendebank.beans.Orders" table="ORDERS">
+	    <id name="orderNo" column="ORDER_NO" type="java.lang.String">
+	    	<generator class="assigned" />
+	    </id>
+        <property name="memberNo" type="java.lang.String">
+            <column name="MEMBER_NO" />
+        </property>
+        <property name="addressee" type="java.lang.String">
+            <column name="ADDRESSEE" />
+        </property>
+        <property name="addresseeTelephone" type="java.lang.String">
+            <column name="ADDRESSEE_TELEPHONE" />
+        </property>
+        <property name="addresseeMobile" type="java.lang.String">
+            <column name="ADDRESSEE_MOBILE" />
+        </property>
+        <property name="addresseeAddress" type="java.lang.String">
+            <column name="ADDRESSEE_ADDRESS" />
+        </property>
+        <property name="buyDate" type="java.util.Date">
+            <column name="BUY_DATE" />
+        </property>
+        <property name="createDate" type="java.util.Date">
+            <column name="CREATE_DATE" />
+        </property>
+        <property name="orderStatus" type="java.lang.String">
+            <column name="ORDER_STATUS" />
+        </property>
+        <property name="payStatus" type="java.lang.String">
+            <column name="PAY_STATUS" />
+        </property>
+        <property name="deliverStatus" type="java.lang.String">
+            <column name="DELIVER_STATUS" />
+        </property>
+        <property name="orderTotalprice" type="float">
+            <column name="ORDER_TOTALPRICE" />
+        </property>
+        <property name="orderPayprice" type="float">
+            <column name="ORDER_PAYPRICE" />
+        </property>
+        <property name="remittanceAccount" type="java.lang.String">
+            <column name="REMITTANCE_ACCOUNT" />
+        </property>
+        <set name="ordersSet" table="ORDERS_DETAIL" inverse="false" lazy="true" cascade="all">
+            <key column="ORDER_NO" />
+            <one-to-many class="tw.com.tendebank.beans.OrdersDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

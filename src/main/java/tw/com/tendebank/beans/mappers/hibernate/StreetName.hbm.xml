@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 9, 2016 10:19:28 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.com.tendebank.beans.StreetName" table="STREETNAME">
+        <id name="uid" type="int">
+            <column name="UID" />
+            <generator class="assigned" />
+        </id>
+        <property name="mailcode" type="java.lang.String">
+            <column name="MAILCODE" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="road" type="java.lang.String">
+            <column name="ROAD" />
+        </property>
+    </class>
+</hibernate-mapping>

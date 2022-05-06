@@ -1,0 +1,11 @@
+.word-error {
+	color:#FF0000;
+}
+/* 如果已經被輸入過且驗證失敗，加入粉紅色背景 */
+input.ng-dirty.ng-invalid {
+	background: #ffecec;
+}
+
+.tendebank-content {
+	padding-bottom: 5px;
+}

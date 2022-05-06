@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx 
+     	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="#{dbProp.driverClass_MsSql}" />
+		<property name="jdbcUrl" value="#{dbProp.jdbcUrl_MsSql}" />
+		<property name="user" value="#{dbProp.username_MsSql}" />
+		<property name="password" value="#{dbProp.password_MsSql}" />
+		<property name="initialPoolSize" value="#{dbProp.initialPoolSize_MsSql}" />
+		<property name="maxPoolSize" value="#{dbProp.maxPoolSize_MsSql}" />
+		<property name="minPoolSize" value="#{dbProp.minPoolSize_MsSql}" />
+		<property name="acquireIncrement" value="#{dbProp.acquireIncrement_MsSql}" />
+		<property name="autoCommitOnClose" value="#{dbProp.autoCommitOnClose_MsSql}" />
+		 
+		<property name="maxIdleTime" value="#{dbProp.maxIdleTime_MsSql}" />
+		<property name="maxStatements" value="#{dbProp.maxStatements_MsSql}" />
+		<property name="idleConnectionTestPeriod" value="#{dbProp.idleConnectionTestPeriod_MsSql}" />  
+		<property name="acquireRetryAttempts" value="#{dbProp.acquireRetryAttempts_MsSql}" />  
+		<property name="breakAfterAcquireFailure" value="#{dbProp.breakAfterAcquireFailure_MsSql}" />  
+		<property name="testConnectionOnCheckout" value="#{dbProp.testConnectionOnCheckout_MsSql}" />
+	</bean>
+
+	<!-- Hibernate 的 session factory 配置 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="c3p0DataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">#{dbProp.hibernate_dialect}</prop>
+				<prop key="hibernate.show_sql">#{dbProp.hibernate_showSql}</prop>
+				<prop key="hibernate.format_sql">#{dbProp.hibernate_formatSql}</prop>
+				<prop key="hibernate.use_sql_comments">#{dbProp.hibernate_useSqlComments}</prop>
+				<prop key="hibernate.hbm2ddl.auto">#{dbProp.hibernate_hbm2ddlAuto}</prop>
+				
+				<!-- 配置hibernate的緩存機制的 -->
+				<prop key="hibernate.cache.provider_class">#{dbProp.hibernate_cacheProviderClass}</prop>
+				<prop key="hibernate.cache.use_query_cache">#{dbProp.hibernate_cacheUseQueryCache}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">#{dbProp.hibernate_cacheUseSecondLevelCache}</prop>
+			</props>
+		</property>
+
+		<!-- 用了hibernate的兩種映射配置方式：xml與annotation -->
+		<property name="packagesToScan" value="tw.com.tendebank.beans" />
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:tw/com/tendebank/beans/mappers/hibernate/*.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Mybatis 的 session factory 配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="c3p0DataSource" />
+		<property name="configLocation" value="classpath:mybatis/sqlmap-config.xml" />
+	</bean>
+
+	<!-- 掃描 mapper 介面 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="tw.com.tendebank.daos" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+
+	<!-- 此處為事務代理 -->
+	<!-- <bean name="payPalManager" parent="transactionProxy">
+			<property name="target" ref="payPalService"></property>
+		 </bean> -->
+
+	<!-- 這個是配置AOP形式的transaction管理，有興趣的可以放開注釋自己玩玩 -->
+	<!-- handle default transaction management for service - start
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="update*" read-only="false" propagation="REQUIRED" />
+			<tx:method name="save*" read-only="false" propagation="REQUIRED" />
+			<tx:method name="insert*" read-only="false" propagation="REQUIRED" />
+			<tx:method name="delete*" read-only="false" propagation="REQUIRED" />
+			<tx:method name="handleLink*" read-only="false" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" propagation="NOT_SUPPORTED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="txOperationForService"
+			expression="execution(* tw.com.tendebank.services.impl..*.*(..))" />
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="txOperationForService" />
+	</aop:config> -->
+	<!-- handle default transaction management for service - end -->
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- Transaction Manager -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<!-- 用於Mybatis 的事務配置 -->
+		<property name="dataSource" ref="c3p0DataSource" />
+
+		<!-- 用於Hibernate 的事務配置 -->
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 注解形式的transaction管理 -->
+	<!-- Transaction Manager Annotation set active -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 配置事務，使用代理的方式 -->
+	<bean id="transactionProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		abstract="true">
+		<property name="transactionManager" ref="transactionManager"></property>
+		<property name="transactionAttributes">
+			<props>
+				<!-- 指定了 "PROPAGATION_REQUIRED"，表示在當前的事務中執行操作，如果事務不存在就建立一個新的。 如果使用-Exception,意思是對所有的異常異常都回滾。 
+					Exception前面加上 "-" 時，表示發生指定異常時撤銷操作(rollback)，如果前面加上 "+"， 表示發生異常時立即提交(commit)。 -->
+				<prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-myException</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

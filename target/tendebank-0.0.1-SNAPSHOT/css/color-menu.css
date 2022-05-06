@@ -1,0 +1,126 @@
+body {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+html,body {
+	height: 100%;
+	margin: 0;
+}
+
+#header {
+	height: 153px;
+	background-color: #cd853f;
+}
+
+/*#content-body, #sidebar,.container {
+		border: solid 1px #333;
+}*/
+#sidebar {
+	padding-top: 10px;
+}
+
+#menu-wrapper .main-menu,#menu-wrapper .sub-menu {
+	margin: 0 auto;
+	width: 980px;
+}
+
+#menu-wrapper ul,#menu-wrapper ul li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.main-menu ul li,.sub-menu ul li {
+	float: left;
+}
+
+.main-menu ul li a {
+	color: #000;
+	display: block;
+	margin-right: 50px;
+	padding: 5px 5px 5px 0;
+	text-decoration: none;
+}
+
+.sub-menu-wrapper {
+	height: 29px;
+	clear: left;
+	background-color: #f90;
+	border-top: 0px solid #f90; /* 預設使用跟 .c1 一樣的顏色 */
+}
+
+.sub-menu {
+	position: relative;
+	overflow: hidden;
+}
+
+.sub-menu ul {
+	position: absolute;
+}
+
+.sub-menu ul li a {
+	color: #fff;
+	display: block;
+	margin-right: 20px;
+	padding-top: 2px;
+	text-decoration: none;
+}
+
+/* 自訂子選單的位置 */
+.sub-menu .sub-memu-1 {
+	left: 50px;
+}
+
+.sub-menu .sub-memu-2 {
+	left: 170px;
+}
+
+.sub-menu .sub-memu-3 {
+	left: 265px;
+}
+
+.sub-menu .sub-memu-4 {
+	left: 300px;
+}
+
+.sub-menu .sub-memu-5 {
+	left: 365px;
+}
+/* 自訂每一個選單的顏色 */
+.main-menu ul li.m1 span,.main-menu ul li.m1 a.selected {
+	color: #f90;
+}
+
+.main-menu ul li.m2 span,.main-menu ul li.m2 a.selected {
+	color: #09c;
+}
+
+.main-menu ul li.m3 span,.main-menu ul li.m3 a.selected {
+	color: #3c0;
+}
+
+.main-menu ul li.m4 span,.main-menu ul li.m4 a.selected {
+	color: #f6f;
+}
+
+.main-menu ul li.m5 span,.main-menu ul li.m5 a.selected {
+	color: #b22222;
+}
+
+.main-menu ul li.m6 span,.main-menu ul li.m6 a.selected {
+	color: #483d8b;
+}
+
+#wrap {
+	min-height: 100%;
+	height: auto;
+	margin: 0 auto -80px;
+	padding: 0 0 80px;
+}
+
+#footer {
+	height: 80px;
+	background-color: #cd853f;
+	text-align: center;
+}

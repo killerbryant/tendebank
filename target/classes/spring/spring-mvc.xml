@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"     
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"     
+    xmlns:context="http://www.springframework.org/schema/context"     
+    xmlns:mvc="http://www.springframework.org/schema/mvc"     
+    xsi:schemaLocation="      
+           http://www.springframework.org/schema/beans      
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd      
+           http://www.springframework.org/schema/context      
+           http://www.springframework.org/schema/context/spring-context-3.2.xsd     
+           http://www.springframework.org/schema/mvc      
+           http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">  
+        
+    <!-- 啟動時掃描所有的controller -->
+    <context:component-scan base-package="tw.com.tendebank.controllers" />
+    
+    <!--  主要作用於@Controller，啟動該模式，下面是一種簡寫形式，完全可以手動配置替代這種簡寫形式，它會自動註冊DefaultAnnotationHandlerMapping與AnnotationMethodHandlerAdapter，是spring MVC為@Controllers分發請求所必須的   -->
+    <mvc:annotation-driven />
+    
+    <!-- 配置js,css等靜態檔直接映射到對應的資料夾，不被DispatcherServlet處理 -->
+    <mvc:resources location="/img/" mapping="/img/**"/>
+    <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    
+    <!-- jsp頁面解析器，當Controller返回XXX字串時，先通過攔截器，然後該類就會在/WEB-INF/views/目錄下，查找XXX.jsp文件 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/pages/" />
+        <property name="suffix" value=".jsp" />
+        <property name="order" value="0" />
+    </bean>
+    
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/" />
+        <property name="suffix" value=".jsp" />
+        <property name="order" value="1" />
+    </bean>
+   
+   <mvc:interceptors>  
+        <mvc:interceptor>  
+           <!-- 需攔截的地址 -->  
+            <!-- 一級目錄 -->  
+            <mvc:mapping path="/*.do" />  
+            <mvc:mapping path="/*.ajax" /> 
+  
+            <!-- 二級目錄 -->  
+            <mvc:mapping path="/*/*.do" />  
+            <mvc:mapping path="/*/*.ajax" />
+            <!-- 需排除攔截的地址 -->
+            <mvc:exclude-mapping path="/login"/>
+            <bean class="tw.com.tendebank.interceptor.SpringMVCInterceptor" />  
+        </mvc:interceptor>  
+    </mvc:interceptors>
+    
+    <!-- 上傳文件 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"/>
+		<!-- 最大記憶體大小 -->
+		<property name="maxInMemorySize" value="10240"/>
+		<!-- 最大檔大小，-1為不限制大小 -->
+		<property name="maxUploadSize" value="-1"/>
+	</bean>
+    
+</beans>

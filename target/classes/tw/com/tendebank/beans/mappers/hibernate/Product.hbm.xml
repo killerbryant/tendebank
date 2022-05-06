@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015/4/20 ?U?? 05:46:57 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="tw.com.tendebank.beans.Product" table="PRODUCT">
+    	<id name="productNo" type="java.lang.String">
+            <column name="PRODUCT_NO" />
+            <generator class="assigned" />
+        </id>
+        <property name="productName" type="java.lang.String">
+            <column name="PRODUCT_NAME" />
+        </property>
+        <property name="salesPrice">
+            <column name="SALESPRICE" />
+        </property>
+        <property name="cost">
+            <column name="COST" />
+        </property>
+        <property name="vendor" type="java.lang.String">
+            <column name="VENDOR" />
+        </property>
+        <property name="productType" type="java.lang.String">
+            <column name="PRODUCT_TYPE" />
+        </property>
+        <property name="onCart" type="java.lang.String">
+            <column name="ON_CART" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="imgPath" type="java.lang.String">
+            <column name="IMG_PATH" />
+        </property>
+        <property name="cartStatus" type="java.lang.String">
+            <column name="CART_STATUS" />
+        </property>
+    </class>
+</hibernate-mapping>
